@@ -1,0 +1,5 @@
+<nav>
+  <button routerLink="/create" routerLinkActive="active" (click)="handleCreateClick()">Create</button>
+  <input [(ngModel)]="searchQuery" placeholder="Search..." (input)="onInputChange()"/>
+</nav>
+<router-outlet></router-outlet>

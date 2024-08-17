@@ -1,0 +1,74 @@
+<h2>{{ isEditMode ? 'Edit Course' : 'Add new Course Screen' }}</h2>
+<form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Course Name</mat-label>
+    <input matInput formControlName="course_name" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>University</mat-label>
+    <input matInput [matAutocomplete]="autoUniversity" formControlName="university" required>
+    <mat-autocomplete #autoUniversity="matAutocomplete">
+      <mat-option *ngFor="let option of filteredUniversities | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Country</mat-label>
+    <input matInput [matAutocomplete]="autoCountry" formControlName="country" required>
+    <mat-autocomplete #autoCountry="matAutocomplete">
+      <mat-option *ngFor="let option of filteredCountries | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>City</mat-label>
+    <input matInput [matAutocomplete]="autoCity" formControlName="city" required>
+    <mat-autocomplete #autoCity="matAutocomplete">
+      <mat-option *ngFor="let option of filteredCities | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  
+  <mat-form-field appearance="outline">
+    <mat-label>Currency</mat-label>
+    <input matInput [matAutocomplete]="autoCurrency" formControlName="currency" required>
+    <mat-autocomplete #autoCurrency="matAutocomplete">
+      <mat-option *ngFor="let option of filteredCurrencies | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" formControlName="price" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Start Date</mat-label>
+    <input matInput [matDatepicker]="startPicker" formControlName="start_date" required>
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>End Date</mat-label>
+    <input matInput [matDatepicker]="endPicker" formControlName="end_date" required>
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Course Description</mat-label>
+    <textarea matInput formControlName="course_description"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">{{ isEditMode ? 'Update' : 'Save' }}</button>
+  <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+</form>

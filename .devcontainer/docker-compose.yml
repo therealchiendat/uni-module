@@ -1,0 +1,12 @@
+version: '3.9'
+    
+services:
+  uni-module:
+    user: "node"
+    build: .
+    working_dir: /home/node/workspace/
+    ports:
+      - 4001:4001
+    volumes:
+      - ~/.ssh:/home/node/.ssh
+      - ..:/home/node/workspace/

@@ -1,0 +1,23 @@
+{
+    "name": "University Module",
+    "dockerComposeFile": "./docker-compose.yml",
+    "workspaceFolder": "/home/node/workspace",
+    "overrideCommand": true,
+    "service": "uni-module",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "ms-azuretools.vscode-docker",
+                "eamodio.gitlens",
+                "visualstudioexptteam.vscodeintellicode",
+                "esbenp.prettier-vscode",
+                "vscodevim.vim",
+                "angular.ng-template"
+            ],
+            "settings": {}
+        }
+    },
+    "postCreateCommand": ".devcontainer/run-once.sh && .devcontainer/dev_prep.sh",
+    "remoteUser": "node"
+}
