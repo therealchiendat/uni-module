@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatIconButton } from '@angular/material/button';
 
 
 @Component({
@@ -27,7 +28,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatError, 
     MatIcon,
     MatPaginator,
-    MatTooltip
+    MatTooltip,
+    MatIconButton
   ],
 })
 

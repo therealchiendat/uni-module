@@ -1,0 +1,14 @@
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    height: 30px;
+}
+
+router-outlet {
+    height: calc(100vh - 25px);
+    background-color: #333;
+}

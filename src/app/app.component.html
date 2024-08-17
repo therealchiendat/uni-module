@@ -1,5 +1,7 @@
 <nav>
-  <button routerLink="/create" routerLinkActive="active" (click)="handleCreateClick()">Create</button>
-  <input [(ngModel)]="searchQuery" placeholder="Search..." (input)="onInputChange()"/>
+  <button mat-flat-button routerLink="/create" routerLinkActive="active" (click)="handleCreateClick()">Create</button>
+  <mat-form-field>
+    <input matInput [(ngModel)]="searchQuery" placeholder="Search..." (input)="onInputChange()"/>
+  </mat-form-field>
 </nav>
 <router-outlet></router-outlet>

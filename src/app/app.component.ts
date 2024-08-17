@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError } from '@angular/material/form-field';
+import { MatError, MatFormField } from '@angular/material/form-field';
 import { Router, RouterOutlet } from '@angular/router';
 import { CourseListComponent } from './components/course-list/course-list.component';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from './services/search.service';
+import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,10 @@ import { SearchService } from './services/search.service';
     MatError,
     RouterOutlet,
     CourseListComponent,
-    FormsModule
+    FormsModule,
+    MatButton,
+    MatInput,
+    MatFormField
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
