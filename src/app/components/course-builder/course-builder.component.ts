@@ -58,9 +58,9 @@ export class CourseBuilderComponent implements OnInit {
     // if url has `edit/:id`, then we are in edit mode)
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
-      this.editId = id!;
-      this.isEditMode = true;
       if (id) {
+        this.editId = id!;
+        this.isEditMode = true;
         this.fetchCourseData(id);
       }
     });

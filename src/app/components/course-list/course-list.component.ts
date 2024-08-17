@@ -6,7 +6,7 @@ import {MatListModule} from '@angular/material/list';
 import { MatError } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
@@ -33,15 +33,25 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 export class CourseListComponent implements OnInit {
   displayedColumns: string[] = ['course_name', 'university', 'city', 'country', 'start_date', 'duration', 'price'];
-  courses: any = [];
+  courses: any = new MatTableDataSource<Course[]>([]);
   isLoading = true;
   duration: number[] = [];
   error = '';
+  length = 100;
+  pageSize = 10;
+  pageIndex = 0;
+  skip = (this.pageIndex + 1) * this.pageSize;
+  limit = this.pageSize; 
+  pageSizeOptions = [5, 10, 25];
+  pageEvent!: PageEvent;
 
   constructor(private courseService: CourseService, private searchService: SearchService, private router: Router, private route: ActivatedRoute) {}
 
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+  ngAfterViewInit() {
+    this.courses.paginator = this.paginator;
+  }
 
   getDuration(start: string, end: string): number {
     const startDate = new Date(start);
@@ -52,7 +62,6 @@ export class CourseListComponent implements OnInit {
   }
 
   editCourse(id: string): void {
-    console.log('edit course', id);
     this.router.navigateByUrl(`/edit/${id}`);
   }
 
@@ -67,31 +76,54 @@ export class CourseListComponent implements OnInit {
     });
   }
 
+  handleNext = (data: any) => {
+    this.courses = data;
+    this.isLoading = false;
+  };
+  handleErr = (err: any) => {
+    this.error = 'Failed to load courses';
+    this.isLoading = false;
+  }
+
   loadCourses(searchTerm: string = ''): void {
     this.isLoading = true;
-    const handleNext = (data: any) => {
-      this.courses = new MatTableDataSource<Course[]>(data);
-      this.isLoading = false;
-    };
-    const handleErr = (err: any) => {
-      this.error = 'Failed to load courses';
-      this.isLoading = false;
-    }
     searchTerm
     ? this.courseService.searchCourses(searchTerm).subscribe({
-      next: (data) => handleNext(data),
-      error: (err) => handleErr(err),
+      next: (data) => this.handleNext(data),
+      error: (err) => this.handleErr(err),
     }) 
-    : this.courseService.getAllCourses().subscribe({
-      next: (data) => handleNext(data),
-      error: (err) => handleErr(err),
+    : this.courseService.getAllCourses((this.pageIndex + 1) * this.pageSize, this.pageSize).subscribe({
+      next: (data) => this.handleNext(data),
+      error: (err) => this.handleErr(err),
     });
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.skip = (this.pageIndex + 1) * this.pageSize;
+    this.limit = this.pageSize;
+    this.courseService.getAllCourses(this.skip, this.limit).subscribe({
+      next: (data) => this.handleNext(data),
+      error: (err) => this.handleErr(err),
+    });
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
   }
 
   ngOnInit(): void {
     // Subscribe to the search term observable
     this.searchService.searchTerm$.subscribe((term) => {
       term ? this.loadCourses(term) : this.loadCourses();
+    });
+    this.courseService.getTotalCourses().subscribe((data: number) => {
+      this.length = data;
     });
   }
 }

@@ -39,10 +39,14 @@ export class CourseService {
       .set('limit', limit.toString());
 
     if (searchTerm) {
-      params = params.set('search_term', searchTerm);
+      params = params.set('search', searchTerm);
     }
 
     return this.http.get<{ courses: Course[], total: number }>(this.endpoints.get, { params });
+  }
+
+  getTotalCourses(): Observable<number> {
+    return this.http.get<number>(`${this.endpoints.get}/total`);
   }
   
   createCourse(course: Course): Observable<Course> {
